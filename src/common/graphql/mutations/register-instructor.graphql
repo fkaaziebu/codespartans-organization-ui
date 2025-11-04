@@ -1,0 +1,11 @@
+mutation RegisterInstructor(
+    $name: String!
+    $email: String!
+    $password: String!
+) {
+    registerInstructor(name: $name, email: $email, password: $password) {
+        id
+        email
+        name
+    }
+}

@@ -1,0 +1,9 @@
+query GetStats {
+    getStats {
+        total_admins
+        total_assigned_reviews
+        total_completed_reviews
+        total_instructors
+        total_requested_reviews
+    }
+}

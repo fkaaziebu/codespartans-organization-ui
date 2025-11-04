@@ -1,0 +1,9 @@
+mutation RegisterOrganization(
+    $name: String!
+    $email: String!
+    $password: String!
+) {
+    registerOrganization(name: $name, email: $email, password: $password) {
+        message
+    }
+}

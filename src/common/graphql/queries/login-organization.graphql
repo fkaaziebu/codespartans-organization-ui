@@ -1,0 +1,8 @@
+query LoginOrganization($email: String!, $password: String!) {
+    loginOrganization(email: $email, password: $password) {
+        id
+        email
+        name
+        token
+    }
+}

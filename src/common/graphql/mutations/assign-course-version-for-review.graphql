@@ -1,0 +1,5 @@
+mutation AssignCourseVersionForReview($versionId: String!, $adminId: String!) {
+    assignCourseVersionForReview(versionId: $versionId, adminId: $adminId) {
+        id
+    }
+}

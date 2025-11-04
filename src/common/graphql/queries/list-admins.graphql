@@ -1,0 +1,13 @@
+query ListAdmins($searchTerm: String, $pagination: PaginationInput) {
+    listAdmins(searchTerm: $searchTerm, pagination: $pagination) {
+        edges {
+            node {
+                id
+                email
+                name
+                total_course_versions
+                total_approved_course_versions
+            }
+        }
+    }
+}
