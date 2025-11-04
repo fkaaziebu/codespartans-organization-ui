@@ -27,7 +27,13 @@ const instructorSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export default function CreateInstructorModal({ open, onClose }) {
+export default function CreateInstructorModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const {
     register,
     handleSubmit,

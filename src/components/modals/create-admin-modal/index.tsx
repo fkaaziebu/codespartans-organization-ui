@@ -27,7 +27,13 @@ const adminSchema = z.object({
   password: z.string().min(6, "Password must be at least 6 characters"),
 });
 
-export default function CreateAdminModal({ open, onClose }) {
+export default function CreateAdminModal({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) {
   const {
     register,
     handleSubmit,

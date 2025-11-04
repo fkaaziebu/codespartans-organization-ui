@@ -26,7 +26,7 @@ export default function AssignModal({
   const { assignCourseVersionForReview } = useAssignCourseVersionForReview();
   const { listAdmins } = useListAdmins();
   const router = useRouter();
-  const [selectedAdminId, setSelectedAdminId] = useState(null);
+  const [selectedAdminId, setSelectedAdminId] = useState<string | null>(null);
   const [isAssigning, setIsAssigning] = useState(false);
   const [admins, setAdmins] = useState<AdminResponse[] | undefined>([]);
 
@@ -108,7 +108,7 @@ export default function AssignModal({
             {admins?.map((admin) => (
               <div
                 key={admin.id}
-                onClick={() => setSelectedAdminId(admin.id)}
+                onClick={() => setSelectedAdminId(admin.id || null)}
                 className={cn(
                   "flex items-center justify-between p-4 rounded-lg border-2 cursor-pointer transition-all",
                   selectedAdminId === admin.id
