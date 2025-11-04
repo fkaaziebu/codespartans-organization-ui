@@ -10,7 +10,7 @@ WORKDIR /app
 
 # Install dependencies based on the preferred package manager
 COPY package*.json ./
-RUN npm ci
+RUN npm ci --include prod
 
 
 # Rebuild the source code only when needed
