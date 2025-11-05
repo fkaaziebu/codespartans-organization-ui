@@ -22,17 +22,18 @@ RUN npm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 ENV NODE_ENV=production
+
 # Add a non-root user for security
 RUN addgroup --system --gid 1001 nextjs
 RUN adduser --system --uid 1001 nextjs
+
 # Copy necessary files from builder stage
-# COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
-COPY --from=builder /app/node_modules ./node_modules
 
 # Set correct permissions
-RUN chmod -R a-w+x . && chmod -R a+x .next node_modules
+RUN chmod -R a-w+x . && chmod -R a+x .next
 USER nextjs
 
 EXPOSE 3000
