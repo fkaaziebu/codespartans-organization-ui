@@ -70,7 +70,9 @@ export default function DashboardPage() {
 
   const getOrgStats = async () => {
     try {
-      const response = await getStats();
+      const response = await getStats({
+        fetchPolicy: "no-cache",
+      });
 
       setStats(response.data?.getStats);
     } catch (error) {
@@ -87,6 +89,7 @@ export default function DashboardPage() {
             first: 1000,
           },
         },
+        fetchPolicy: "no-cache",
       });
 
       // @ts-expect-error err
@@ -120,6 +123,7 @@ export default function DashboardPage() {
             first: 1000,
           },
         },
+        fetchPolicy: "no-cache",
       });
 
       // @ts-expect-error err
@@ -202,20 +206,20 @@ export default function DashboardPage() {
       <CreateInstructorModal
         open={isInstructorModalOpen}
         onClose={() => setIsInstructorModalOpen(false)}
-        handleReload={() => {
-          getOrgStats();
-          listOrgInstructors();
-          listOrgAdmins();
+        handleReload={async () => {
+          await getOrgStats();
+          await listOrgInstructors();
+          await listOrgAdmins();
         }}
       />
 
       <CreateAdminModal
         open={isAdminModalOpen}
         onClose={() => setIsAdminModalOpen(false)}
-        handleReload={() => {
-          getOrgStats();
-          listOrgInstructors();
-          listOrgAdmins();
+        handleReload={async () => {
+          await getOrgStats();
+          await listOrgInstructors();
+          await listOrgAdmins();
         }}
       />
 
@@ -237,10 +241,10 @@ export default function DashboardPage() {
         open={isAssignModalOpen}
         onClose={() => setIsAssignModalOpen(false)}
         versionId={selectedVersionId}
-        handleReload={() => {
-          getOrgStats();
-          listOrgInstructors();
-          listOrgAdmins();
+        handleReload={async () => {
+          await getOrgStats();
+          await listOrgInstructors();
+          await listOrgAdmins();
         }}
       />
     </div>
