@@ -5,8 +5,6 @@ import {
   AdminResponse,
   InstructorResponse,
   StatsResponse,
-  Version,
-  VersionStatusType,
 } from "@/common/graphql/generated/graphql";
 import { useGetStats, useListAdmins } from "@/common/hooks/queries";
 import useListInstructors from "@/common/hooks/queries/use-list-instructors";
@@ -204,11 +202,21 @@ export default function DashboardPage() {
       <CreateInstructorModal
         open={isInstructorModalOpen}
         onClose={() => setIsInstructorModalOpen(false)}
+        handleReload={() => {
+          getOrgStats();
+          listOrgInstructors();
+          listOrgAdmins();
+        }}
       />
 
       <CreateAdminModal
         open={isAdminModalOpen}
         onClose={() => setIsAdminModalOpen(false)}
+        handleReload={() => {
+          getOrgStats();
+          listOrgInstructors();
+          listOrgAdmins();
+        }}
       />
 
       <ReviewsModal
@@ -229,6 +237,11 @@ export default function DashboardPage() {
         open={isAssignModalOpen}
         onClose={() => setIsAssignModalOpen(false)}
         versionId={selectedVersionId}
+        handleReload={() => {
+          getOrgStats();
+          listOrgInstructors();
+          listOrgAdmins();
+        }}
       />
     </div>
   );

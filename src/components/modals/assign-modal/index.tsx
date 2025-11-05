@@ -17,10 +17,12 @@ import { cn } from "@/lib/utils";
 export default function AssignModal({
   open,
   onClose,
+  handleReload,
   versionId,
 }: {
   open: boolean;
   onClose: () => void;
+  handleReload: () => void;
   versionId: string | undefined;
 }) {
   const { assignCourseVersionForReview } = useAssignCourseVersionForReview();
@@ -71,9 +73,9 @@ export default function AssignModal({
         },
       });
 
-      console.log(response);
       setIsAssigning(false);
       setSelectedAdminId(null);
+      handleReload();
       onClose();
     } catch (error) {
       console.log(error);

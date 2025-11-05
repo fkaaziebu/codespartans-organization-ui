@@ -121,7 +121,7 @@ export type Course = {
 export type CourseConnection = {
   __typename?: 'CourseConnection';
   count: Scalars['Int']['output'];
-  edges: Array<CourseTypeClassEdge>;
+  edges: Array<CourseResponseEdge>;
   pageInfo: PageInfo;
 };
 
@@ -135,10 +135,32 @@ export type CourseInfoInput = {
   title: Scalars['String']['input'];
 };
 
-export type CourseTypeClassEdge = {
-  __typename?: 'CourseTypeClassEdge';
+export type CourseResponse = {
+  __typename?: 'CourseResponse';
+  approved_version?: Maybe<Version>;
+  avatar_url: Scalars['String']['output'];
+  categories?: Maybe<Array<Category>>;
+  coupons?: Maybe<Array<Coupon>>;
+  currency: CurrencyType;
+  description: Scalars['String']['output'];
+  domains: Array<DomainType>;
+  estimated_duration: Scalars['Float']['output'];
+  id: Scalars['ID']['output'];
+  instructor?: Maybe<Instructor>;
+  is_subscribed: Scalars['Boolean']['output'];
+  level: LevelType;
+  organization?: Maybe<Organization>;
+  price: Scalars['Float']['output'];
+  subscribed_students?: Maybe<Array<Student>>;
+  title: Scalars['String']['output'];
+  total_questions: Scalars['Float']['output'];
+  versions?: Maybe<Array<Version>>;
+};
+
+export type CourseResponseEdge = {
+  __typename?: 'CourseResponseEdge';
   cursor: Scalars['String']['output'];
-  node: Course;
+  node: CourseResponse;
 };
 
 /** Currency */
@@ -242,11 +264,16 @@ export type Mutation = {
   createCategory: Category;
   createCheckout: Checkout;
   createCourse: Course;
+  endTest: Test;
+  pauseTest: Test;
   registerAdmin: Admin;
   registerInstructor: Instructor;
   registerOrganization: RegisterResponse;
   registerStudent: RegisterResponse;
   requestCourseVersionReview: ReviewRequest;
+  resumeTest: Test;
+  startTest: Test;
+  submitAnswer: SubmittedAnswer;
   updateCourse: Course;
   updateIssue: Issue;
   updateQuestion: Question;
@@ -282,6 +309,9 @@ export type MutationAddCoursesToCategoryArgs = {
 
 export type MutationAddQuestionsToCourseVersionArgs = {
   questions: Array<QuestionInput>;
+  suiteDescription: Scalars['String']['input'];
+  suiteKeywords: Array<Scalars['String']['input']>;
+  suiteTitle: Scalars['String']['input'];
   versionId: Scalars['String']['input'];
 };
 
@@ -331,6 +361,16 @@ export type MutationCreateCourseArgs = {
 };
 
 
+export type MutationEndTestArgs = {
+  testId: Scalars['String']['input'];
+};
+
+
+export type MutationPauseTestArgs = {
+  testId: Scalars['String']['input'];
+};
+
+
 export type MutationRegisterAdminArgs = {
   email: Scalars['String']['input'];
   name: Scalars['String']['input'];
@@ -362,6 +402,24 @@ export type MutationRegisterStudentArgs = {
 
 export type MutationRequestCourseVersionReviewArgs = {
   versionId: Scalars['String']['input'];
+};
+
+
+export type MutationResumeTestArgs = {
+  testId: Scalars['String']['input'];
+};
+
+
+export type MutationStartTestArgs = {
+  suiteId: Scalars['String']['input'];
+};
+
+
+export type MutationSubmitAnswerArgs = {
+  answer: Scalars['String']['input'];
+  questionId: Scalars['String']['input'];
+  testId: Scalars['String']['input'];
+  timeRange: Scalars['String']['input'];
 };
 
 
@@ -397,6 +455,13 @@ export type Organization = {
   students?: Maybe<Array<Student>>;
 };
 
+export type OrganizationConnection = {
+  __typename?: 'OrganizationConnection';
+  count: Scalars['Int']['output'];
+  edges: Array<OrganizationTypeClassEdge>;
+  pageInfo: PageInfo;
+};
+
 export type OrganizationLoginResponse = {
   __typename?: 'OrganizationLoginResponse';
   admins?: Maybe<Array<Admin>>;
@@ -410,6 +475,12 @@ export type OrganizationLoginResponse = {
   requested_reviews?: Maybe<Array<ReviewRequest>>;
   students?: Maybe<Array<Student>>;
   token: Scalars['String']['output'];
+};
+
+export type OrganizationTypeClassEdge = {
+  __typename?: 'OrganizationTypeClassEdge';
+  cursor: Scalars['String']['output'];
+  node: Organization;
 };
 
 export type PageInfo = {
@@ -433,7 +504,10 @@ export type Query = {
   getCourseVersion: VersionResponse;
   getInstructorCourseVersion: VersionResponse;
   getInstructorVersionReview: Review;
+  getOrganizationCourse: Course;
+  getQuestion: Question;
   getStats: StatsResponse;
+  getSubscribedCourseDetails: Course;
   getVersionReview: Review;
   listAdmins: AdminConnection;
   listAssignedVersions: VersionConnection;
@@ -441,6 +515,7 @@ export type Query = {
   listInstructorQuestionsForVersion: QuestionConnection;
   listInstructors: InstructorConnection;
   listOrganizationCourses: CourseConnection;
+  listOrganizations: OrganizationConnection;
   listQuestionsForVersion: QuestionConnection;
   listRequestedReviews: RequestedReviewConnection;
   loginAdmin: AdminLoginResponse;
@@ -467,6 +542,21 @@ export type QueryGetInstructorCourseVersionArgs = {
 
 export type QueryGetInstructorVersionReviewArgs = {
   reviewId: Scalars['String']['input'];
+};
+
+
+export type QueryGetOrganizationCourseArgs = {
+  courseId: Scalars['String']['input'];
+};
+
+
+export type QueryGetQuestionArgs = {
+  testId: Scalars['String']['input'];
+};
+
+
+export type QueryGetSubscribedCourseDetailsArgs = {
+  courseId: Scalars['String']['input'];
 };
 
 
@@ -502,6 +592,12 @@ export type QueryListInstructorsArgs = {
 
 export type QueryListOrganizationCoursesArgs = {
   organizationId: Scalars['String']['input'];
+  pagination?: InputMaybe<PaginationInput>;
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
+};
+
+
+export type QueryListOrganizationsArgs = {
   pagination?: InputMaybe<PaginationInput>;
   searchTerm?: InputMaybe<Scalars['String']['input']>;
 };
@@ -713,6 +809,48 @@ export type StudentLoginResponse = {
   token: Scalars['String']['output'];
 };
 
+export type SubmittedAnswer = {
+  __typename?: 'SubmittedAnswer';
+  answer_provided: Scalars['String']['output'];
+  hints_used: Array<Scalars['String']['output']>;
+  id: Scalars['ID']['output'];
+  is_flagged: Scalars['Boolean']['output'];
+  question?: Maybe<Question>;
+  question_id: Scalars['String']['output'];
+  test?: Maybe<Test>;
+};
+
+/** Suite difficulty */
+export enum SuiteDifficultyType {
+  Advanced = 'ADVANCED',
+  Beginner = 'BEGINNER',
+  Intermediate = 'INTERMEDIATE'
+}
+
+export type Test = {
+  __typename?: 'Test';
+  id: Scalars['ID']['output'];
+  status: TestStatusType;
+  submitted_answers?: Maybe<Array<SubmittedAnswer>>;
+};
+
+/** Test status */
+export enum TestStatusType {
+  Ended = 'ENDED',
+  OnGoing = 'ON_GOING',
+  Paused = 'PAUSED'
+}
+
+export type TestSuite = {
+  __typename?: 'TestSuite';
+  description: Scalars['String']['output'];
+  difficulty: SuiteDifficultyType;
+  id: Scalars['ID']['output'];
+  keywords: Array<Scalars['String']['output']>;
+  questions: Array<Question>;
+  title: Scalars['String']['output'];
+};
+
 export type UpdateCourseInfoInput = {
   avatar_url?: InputMaybe<Scalars['String']['input']>;
   currency?: InputMaybe<CurrencyType>;
@@ -732,6 +870,7 @@ export type Version = {
   review_request?: Maybe<ReviewRequest>;
   reviews?: Maybe<Array<Review>>;
   status: VersionStatusType;
+  test_suites?: Maybe<Array<TestSuite>>;
   updated_at: Scalars['DateTime']['output'];
   version_number: Scalars['Float']['output'];
 };
@@ -753,6 +892,7 @@ export type VersionResponse = {
   review_request?: Maybe<ReviewRequest>;
   reviews: Array<ReviewResponse>;
   status: VersionStatusType;
+  test_suites?: Maybe<Array<TestSuite>>;
   total_questions: Scalars['Float']['output'];
   total_reviews: Scalars['Float']['output'];
   updated_at: Scalars['DateTime']['output'];

@@ -29,9 +29,11 @@ const adminSchema = z.object({
 
 export default function CreateAdminModal({
   open,
+  handleReload,
   onClose,
 }: {
   open: boolean;
+  handleReload: () => void;
   onClose: () => void;
 }) {
   const {
@@ -64,6 +66,7 @@ export default function CreateAdminModal({
         throw new Error(response.errors[0].message);
       }
 
+      handleReload();
       onClose();
     } catch (error) {
       if (error instanceof Error) {

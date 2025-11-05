@@ -29,9 +29,11 @@ const instructorSchema = z.object({
 
 export default function CreateInstructorModal({
   open,
+  handleReload,
   onClose,
 }: {
   open: boolean;
+  handleReload: () => void;
   onClose: () => void;
 }) {
   const {
@@ -64,6 +66,7 @@ export default function CreateInstructorModal({
         throw new Error(response.errors[0].message);
       }
 
+      handleReload();
       onClose();
     } catch (error) {
       if (error instanceof Error) {
