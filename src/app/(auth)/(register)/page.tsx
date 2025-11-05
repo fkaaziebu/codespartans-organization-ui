@@ -12,8 +12,7 @@ import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
 type RegisterFormInputs = {
-  firstName: string;
-  lastName: string;
+  name: string;
   email: string;
   password: string;
   confirmPassword: string;
@@ -21,8 +20,7 @@ type RegisterFormInputs = {
 
 const registerSchema = z
   .object({
-    firstName: z.string().min(1, "First name is required").trim(),
-    lastName: z.string().min(1, "Last name is required").trim(),
+    name: z.string().min(1, "Organization name is required").trim(),
     email: z
       .string()
       .min(1, "Email is required")
@@ -48,8 +46,7 @@ export default function RegisterPage() {
   } = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      name: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -64,7 +61,7 @@ export default function RegisterPage() {
 
       const response = await registerOrganization({
         variables: {
-          name: `${data.firstName} ${data.lastName}`,
+          name: data.name,
           email: data.email,
           password: data.password,
         },
@@ -113,51 +110,22 @@ export default function RegisterPage() {
             </Alert>
           )}
 
-          <div
-            className="flex flex-col space-y-2"
-            // onSubmit={handleSubmit(onSubmit)}
-          >
-            <label
-              htmlFor="firstName"
-              className="text-sm font-bold text-gray-800"
-            >
-              First Name
-            </label>
-            <Input
-              id="firstName"
-              type="text"
-              {...register("firstName")}
-              className={cn(
-                "py-6 text-gray-600",
-                errors.firstName ? "border-red-500" : "",
-              )}
-            />
-            {errors.firstName && (
-              <span className="text-sm text-red-500">
-                {errors.firstName.message}
-              </span>
-            )}
-          </div>
-
           <div className="flex flex-col space-y-2">
-            <label
-              htmlFor="lastName"
-              className="text-sm font-bold text-gray-800"
-            >
-              Last Name
+            <label htmlFor="name" className="text-sm font-bold text-gray-800">
+              Organization Name
             </label>
             <Input
-              id="lastName"
+              id="name"
               type="text"
-              {...register("lastName")}
+              {...register("name")}
               className={cn(
                 "py-6 text-gray-600",
-                errors.lastName ? "border-red-500" : "",
+                errors.name ? "border-red-500" : "",
               )}
             />
-            {errors.lastName && (
+            {errors.name && (
               <span className="text-sm text-red-500">
-                {errors.lastName.message}
+                {errors.name.message}
               </span>
             )}
           </div>
