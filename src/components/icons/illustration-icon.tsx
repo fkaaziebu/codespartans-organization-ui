@@ -45,7 +45,6 @@ export const IllustrationIcon = () => {
       <circle cx={135} cy={8} r={4} fill="#FAFAFA" />
       <foreignObject x={45} y={54} width={64} height={64}>
         <div
-          xmlns="http://www.w3.org/1999/xhtml"
           style={{
             backdropFilter: "blur(4px)",
             clipPath: "url(#bgblur_0_20846_124877_clip_path)",

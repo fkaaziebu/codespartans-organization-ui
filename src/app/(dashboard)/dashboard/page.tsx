@@ -1,4 +1,17 @@
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
 export default function DashboardPage() {
+  const router = useRouter();
+  useEffect(() => {
+    const token = sessionStorage.getItem("token");
+    if (!token) {
+      router.push("/");
+    }
+  }, []);
+
   return (
     <div className="w-full">
       <div className="flex flex-col gap-5 px-8">

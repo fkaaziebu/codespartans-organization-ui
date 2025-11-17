@@ -76,7 +76,6 @@ export const LogoIcon = ({
           </g>
           <foreignObject x={-3} y="19.5" width={63} height={39}>
             <div
-              xmlns="http://www.w3.org/1999/xhtml"
               style={{
                 backdropFilter: "blur(3.75px)",
                 clipPath: "url(#bgblur_2_1271_19_clip_path)",

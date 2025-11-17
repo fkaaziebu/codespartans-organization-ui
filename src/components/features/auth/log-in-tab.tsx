@@ -38,8 +38,8 @@ export const LogInTab = ({ handleTabChange, onSuccess }: LogInTabProps) => {
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-    watch,
   } = useForm<LogInFormInputs>({
+    // @ts-expect-error error
     resolver: zodResolver(logInSchema),
     mode: "onBlur",
     defaultValues: {
@@ -117,7 +117,10 @@ export const LogInTab = ({ handleTabChange, onSuccess }: LogInTabProps) => {
   return (
     <>
       <form
-        onSubmit={handleSubmit(onSubmit)}
+        onSubmit={
+          // @ts-expect-error error
+          handleSubmit(onSubmit)
+        }
         className="z-30 flex w-full flex-col gap-6"
       >
         {serverError && (

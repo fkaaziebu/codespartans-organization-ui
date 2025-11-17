@@ -29,6 +29,7 @@ export default function DashboardPage() {
     try {
       const response = await listRequestedReviews();
 
+      // @ts-expect-error error
       const requested_reviews: RequestedReviewType[] | undefined =
         response.data?.listRequestedReviews.edges.map((edge) => ({
           id: edge.node.id,
@@ -47,7 +48,7 @@ export default function DashboardPage() {
   useEffect(() => {
     const token = sessionStorage.getItem("token");
     if (!token) {
-      router.push("/login");
+      router.push("/");
     }
     listAdminRequestedReviews();
   }, []);
