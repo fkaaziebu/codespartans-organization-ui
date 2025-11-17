@@ -1,15 +1,16 @@
 query ListInstructors($searchTerm: String, $pagination: PaginationInput) {
-    listInstructors(searchTerm: $searchTerm, pagination: $pagination) {
-        count
-        edges {
-            node {
-                id
-                name
-                email
-                total_created_courses
-                total_requested_reviews
-                total_approved_courses
-            }
-        }
+  listInstructors(searchTerm: $searchTerm, pagination: $pagination) {
+    count
+    edges {
+      node {
+        id
+        name
+        email
+        status
+        total_created_courses
+        total_requested_reviews
+        total_approved_courses
+      }
     }
+  }
 }

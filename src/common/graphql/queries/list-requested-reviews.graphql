@@ -1,29 +1,29 @@
 query ListRequestedReviews(
-    $filter: RequestedReviewFilterInput
-    $pagination: PaginationInput
+  $filter: RequestedReviewFilterInput
+  $pagination: PaginationInput
 ) {
-    listRequestedReviews(filter: $filter, pagination: $pagination) {
-        count
-        edges {
-            node {
-                id
-                course_version {
-                    id
-                    status
-                    assigned_admin {
-                        name
-                    }
-                    course {
-                        title
-                        instructor {
-                            name
-                        }
-                        approved_version {
-                            id
-                        }
-                    }
-                }
+  listRequestedReviews(filter: $filter, pagination: $pagination) {
+    count
+    edges {
+      node {
+        id
+        course_version {
+          id
+          status
+          assigned_admin {
+            name
+          }
+          course {
+            title
+            instructor {
+              name
             }
+            approved_version {
+              id
+            }
+          }
         }
+      }
     }
+  }
 }

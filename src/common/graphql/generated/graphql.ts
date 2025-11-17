@@ -25,6 +25,7 @@ export type Admin = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   organization?: Maybe<Organization>;
+  status: AdminStatusType;
 };
 
 export type AdminConnection = {
@@ -41,6 +42,7 @@ export type AdminLoginResponse = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   organization?: Maybe<Organization>;
+  status: AdminStatusType;
   token: Scalars['String']['output'];
 };
 
@@ -51,6 +53,7 @@ export type AdminResponse = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   organization?: Maybe<Organization>;
+  status: AdminStatusType;
   total_approved_course_versions: Scalars['Float']['output'];
   total_course_versions: Scalars['Float']['output'];
 };
@@ -60,6 +63,12 @@ export type AdminResponseEdge = {
   cursor: Scalars['String']['output'];
   node: AdminResponse;
 };
+
+/** Admin status */
+export enum AdminStatusType {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
 
 export type Cart = {
   __typename?: 'Cart';
@@ -109,12 +118,14 @@ export type Course = {
   description: Scalars['String']['output'];
   domains: Array<DomainType>;
   id: Scalars['ID']['output'];
+  inserted_at: Scalars['DateTime']['output'];
   instructor?: Maybe<Instructor>;
   level: LevelType;
   organization?: Maybe<Organization>;
   price: Scalars['Float']['output'];
   subscribed_students?: Maybe<Array<Student>>;
   title: Scalars['String']['output'];
+  updated_at: Scalars['DateTime']['output'];
   versions?: Maybe<Array<Version>>;
 };
 
@@ -146,6 +157,7 @@ export type CourseResponse = {
   domains: Array<DomainType>;
   estimated_duration: Scalars['Float']['output'];
   id: Scalars['ID']['output'];
+  inserted_at: Scalars['DateTime']['output'];
   instructor?: Maybe<Instructor>;
   is_subscribed: Scalars['Boolean']['output'];
   level: LevelType;
@@ -154,6 +166,7 @@ export type CourseResponse = {
   subscribed_students?: Maybe<Array<Student>>;
   title: Scalars['String']['output'];
   total_questions: Scalars['Float']['output'];
+  updated_at: Scalars['DateTime']['output'];
   versions?: Maybe<Array<Version>>;
 };
 
@@ -183,6 +196,7 @@ export type Instructor = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   organizations?: Maybe<Array<Organization>>;
+  status: InstructorStatusType;
 };
 
 export type InstructorConnection = {
@@ -199,6 +213,7 @@ export type InstructorLoginResponse = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   organizations?: Maybe<Array<Organization>>;
+  status: InstructorStatusType;
   token: Scalars['String']['output'];
 };
 
@@ -209,6 +224,7 @@ export type InstructorResponse = {
   id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   organizations?: Maybe<Array<Organization>>;
+  status: InstructorStatusType;
   total_approved_courses: Scalars['Float']['output'];
   total_created_courses: Scalars['Float']['output'];
   total_requested_reviews: Scalars['Float']['output'];
@@ -219,6 +235,12 @@ export type InstructorResponseEdge = {
   cursor: Scalars['String']['output'];
   node: InstructorResponse;
 };
+
+/** Instructor status */
+export enum InstructorStatusType {
+  Active = 'ACTIVE',
+  Inactive = 'INACTIVE'
+}
 
 export type Issue = {
   __typename?: 'Issue';
@@ -722,6 +744,7 @@ export type RequestedReviewConnection = {
 export type RequestedReviewFilterInput = {
   adminId?: InputMaybe<Scalars['String']['input']>;
   instructorId?: InputMaybe<Scalars['String']['input']>;
+  status?: InputMaybe<VersionStatusType>;
 };
 
 export type Review = {
@@ -909,6 +932,7 @@ export type VersionResponseEdge = {
 export enum VersionStatusType {
   Approved = 'APPROVED',
   Archived = 'ARCHIVED',
+  InProgress = 'IN_PROGRESS',
   Pending = 'PENDING',
   Rejected = 'REJECTED'
 }
@@ -959,7 +983,15 @@ export type ListAdminsQueryVariables = Exact<{
 }>;
 
 
-export type ListAdminsQuery = { __typename?: 'Query', listAdmins: { __typename?: 'AdminConnection', edges: Array<{ __typename?: 'AdminResponseEdge', node: { __typename?: 'AdminResponse', id: string, email: string, name: string, total_course_versions: number, total_approved_course_versions: number } }> } };
+export type ListAdminsQuery = { __typename?: 'Query', listAdmins: { __typename?: 'AdminConnection', edges: Array<{ __typename?: 'AdminResponseEdge', node: { __typename?: 'AdminResponse', id: string, email: string, name: string, status: AdminStatusType, total_course_versions: number, total_approved_course_versions: number } }> } };
+
+export type ListCoursesQueryVariables = Exact<{
+  searchTerm?: InputMaybe<Scalars['String']['input']>;
+  pagination?: InputMaybe<PaginationInput>;
+}>;
+
+
+export type ListCoursesQuery = { __typename?: 'Query', listCourses: { __typename?: 'CourseConnection', count: number, edges: Array<{ __typename?: 'CourseResponseEdge', node: { __typename?: 'CourseResponse', id: string, title: string, description: string, currency: CurrencyType, price: number, avatar_url: string, level: LevelType, inserted_at: any, approved_version?: { __typename?: 'Version', id: string } | null, instructor?: { __typename?: 'Instructor', id: string, email: string, name: string } | null } }> } };
 
 export type ListInstructorsQueryVariables = Exact<{
   searchTerm?: InputMaybe<Scalars['String']['input']>;
@@ -967,7 +999,7 @@ export type ListInstructorsQueryVariables = Exact<{
 }>;
 
 
-export type ListInstructorsQuery = { __typename?: 'Query', listInstructors: { __typename?: 'InstructorConnection', count: number, edges: Array<{ __typename?: 'InstructorResponseEdge', node: { __typename?: 'InstructorResponse', id: string, name: string, email: string, total_created_courses: number, total_requested_reviews: number, total_approved_courses: number } }> } };
+export type ListInstructorsQuery = { __typename?: 'Query', listInstructors: { __typename?: 'InstructorConnection', count: number, edges: Array<{ __typename?: 'InstructorResponseEdge', node: { __typename?: 'InstructorResponse', id: string, name: string, email: string, status: InstructorStatusType, total_created_courses: number, total_requested_reviews: number, total_approved_courses: number } }> } };
 
 export type ListRequestedReviewsQueryVariables = Exact<{
   filter?: InputMaybe<RequestedReviewFilterInput>;
@@ -991,7 +1023,8 @@ export const RegisterAdminDocument = {"kind":"Document","definitions":[{"kind":"
 export const RegisterInstructorDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterInstructor"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"registerInstructor"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}}]}}]} as unknown as DocumentNode<RegisterInstructorMutation, RegisterInstructorMutationVariables>;
 export const RegisterOrganizationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"RegisterOrganization"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"name"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"registerOrganization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"name"},"value":{"kind":"Variable","name":{"kind":"Name","value":"name"}}},{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"message"}}]}}]}}]} as unknown as DocumentNode<RegisterOrganizationMutation, RegisterOrganizationMutationVariables>;
 export const GetStatsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getStats"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"total_admins"}},{"kind":"Field","name":{"kind":"Name","value":"total_assigned_reviews"}},{"kind":"Field","name":{"kind":"Name","value":"total_completed_reviews"}},{"kind":"Field","name":{"kind":"Name","value":"total_instructors"}},{"kind":"Field","name":{"kind":"Name","value":"total_requested_reviews"}}]}}]}}]} as unknown as DocumentNode<GetStatsQuery, GetStatsQueryVariables>;
-export const ListAdminsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListAdmins"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listAdmins"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchTerm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"total_course_versions"}},{"kind":"Field","name":{"kind":"Name","value":"total_approved_course_versions"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListAdminsQuery, ListAdminsQueryVariables>;
-export const ListInstructorsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListInstructors"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listInstructors"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchTerm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"total_created_courses"}},{"kind":"Field","name":{"kind":"Name","value":"total_requested_reviews"}},{"kind":"Field","name":{"kind":"Name","value":"total_approved_courses"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListInstructorsQuery, ListInstructorsQueryVariables>;
+export const ListAdminsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListAdmins"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listAdmins"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchTerm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"total_course_versions"}},{"kind":"Field","name":{"kind":"Name","value":"total_approved_course_versions"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListAdminsQuery, ListAdminsQueryVariables>;
+export const ListCoursesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListCourses"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listCourses"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchTerm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"description"}},{"kind":"Field","name":{"kind":"Name","value":"currency"}},{"kind":"Field","name":{"kind":"Name","value":"price"}},{"kind":"Field","name":{"kind":"Name","value":"avatar_url"}},{"kind":"Field","name":{"kind":"Name","value":"approved_version"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}},{"kind":"Field","name":{"kind":"Name","value":"instructor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"level"}},{"kind":"Field","name":{"kind":"Name","value":"inserted_at"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListCoursesQuery, ListCoursesQueryVariables>;
+export const ListInstructorsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListInstructors"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listInstructors"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"searchTerm"},"value":{"kind":"Variable","name":{"kind":"Name","value":"searchTerm"}}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"total_created_courses"}},{"kind":"Field","name":{"kind":"Name","value":"total_requested_reviews"}},{"kind":"Field","name":{"kind":"Name","value":"total_approved_courses"}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListInstructorsQuery, ListInstructorsQueryVariables>;
 export const ListRequestedReviewsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"ListRequestedReviews"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"filter"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"RequestedReviewFilterInput"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PaginationInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"listRequestedReviews"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"filter"},"value":{"kind":"Variable","name":{"kind":"Name","value":"filter"}}},{"kind":"Argument","name":{"kind":"Name","value":"pagination"},"value":{"kind":"Variable","name":{"kind":"Name","value":"pagination"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"count"}},{"kind":"Field","name":{"kind":"Name","value":"edges"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"node"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"course_version"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"status"}},{"kind":"Field","name":{"kind":"Name","value":"assigned_admin"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"course"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"title"}},{"kind":"Field","name":{"kind":"Name","value":"instructor"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"name"}}]}},{"kind":"Field","name":{"kind":"Name","value":"approved_version"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}}]}}]}}]}}]}}]}}]}}]}}]} as unknown as DocumentNode<ListRequestedReviewsQuery, ListRequestedReviewsQueryVariables>;
 export const LoginOrganizationDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"LoginOrganization"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"email"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"password"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"String"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"loginOrganization"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"email"},"value":{"kind":"Variable","name":{"kind":"Name","value":"email"}}},{"kind":"Argument","name":{"kind":"Name","value":"password"},"value":{"kind":"Variable","name":{"kind":"Name","value":"password"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"email"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"token"}}]}}]}}]} as unknown as DocumentNode<LoginOrganizationQuery, LoginOrganizationQueryVariables>;

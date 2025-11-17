@@ -81,15 +81,15 @@ export default function RequestsModal({
         </DialogHeader>
 
         <div className="mt-4">
-          <div className="bg-white rounded-lg border border-gray-200">
+          <div className="rounded-lg border border-gray-200 bg-white">
             <div className="overflow-x-auto">
               <table className="w-full">
-                <thead className="bg-gray-50 border-b border-gray-200">
+                <thead className="border-b border-gray-200 bg-gray-50">
                   <tr>
-                    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-gray-800 uppercase">
                       Course Name
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-bold text-gray-800 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-left text-xs font-bold tracking-wider text-gray-800 uppercase">
                       Instructor
                     </th>
                   </tr>

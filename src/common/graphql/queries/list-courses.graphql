@@ -1,0 +1,25 @@
+query ListCourses($searchTerm: String, $pagination: PaginationInput) {
+  listCourses(searchTerm: $searchTerm, pagination: $pagination) {
+    count
+    edges {
+      node {
+        id
+        title
+        description
+        currency
+        price
+        avatar_url
+        approved_version {
+          id
+        }
+        instructor {
+          id
+          email
+          name
+        }
+        level
+        inserted_at
+      }
+    }
+  }
+}

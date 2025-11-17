@@ -2,7 +2,15 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   /* config options here */
-  output: 'standalone',
+  images: {
+    remotePatterns: [
+      {
+        protocol: "http",
+        hostname: "3.68.98.186",
+      },
+    ],
+  },
+  output: "standalone",
   env: {
     GRAPHQL_BASE_URL: process.env.GRAPHQL_BASE_URL,
     GRAPGQL_WS_BASE_URL: process.env.GRAPGQL_WS_BASE_URL,

@@ -13,6 +13,7 @@ type Admin {
   id: ID!
   name: String!
   email: String!
+  status: AdminStatusType!
   organization: Organization
   assigned_course_versions_for_review: [Version!]
 }
@@ -27,6 +28,7 @@ type AdminLoginResponse {
   id: ID!
   name: String!
   email: String!
+  status: AdminStatusType!
   organization: Organization
   assigned_course_versions_for_review: [Version!]
   token: String!
@@ -36,6 +38,7 @@ type AdminResponse {
   id: ID!
   name: String!
   email: String!
+  status: AdminStatusType!
   organization: Organization
   assigned_course_versions_for_review: [Version!]
   total_course_versions: Float!
@@ -45,6 +48,12 @@ type AdminResponse {
 type AdminResponseEdge {
   cursor: String!
   node: AdminResponse!
+}
+
+"""Admin status"""
+enum AdminStatusType {
+  ACTIVE
+  INACTIVE
 }
 
 type Cart {
@@ -97,6 +106,8 @@ type Course {
   subscribed_students: [Student!]
   organization: Organization
   instructor: Instructor
+  inserted_at: DateTime!
+  updated_at: DateTime!
 }
 
 type CourseConnection {
@@ -131,6 +142,8 @@ type CourseResponse {
   subscribed_students: [Student!]
   organization: Organization
   instructor: Instructor
+  inserted_at: DateTime!
+  updated_at: DateTime!
   is_subscribed: Boolean!
   total_questions: Float!
   estimated_duration: Float!
@@ -163,6 +176,7 @@ type Instructor {
   id: ID!
   name: String!
   email: String!
+  status: InstructorStatusType!
   organizations: [Organization!]
   created_courses: [Course!]
 }
@@ -177,6 +191,7 @@ type InstructorLoginResponse {
   id: ID!
   name: String!
   email: String!
+  status: InstructorStatusType!
   organizations: [Organization!]
   created_courses: [Course!]
   token: String!
@@ -186,6 +201,7 @@ type InstructorResponse {
   id: ID!
   name: String!
   email: String!
+  status: InstructorStatusType!
   organizations: [Organization!]
   created_courses: [Course!]
   total_created_courses: Float!
@@ -196,6 +212,12 @@ type InstructorResponse {
 type InstructorResponseEdge {
   cursor: String!
   node: InstructorResponse!
+}
+
+"""Instructor status"""
+enum InstructorStatusType {
+  ACTIVE
+  INACTIVE
 }
 
 type Issue {
@@ -410,6 +432,7 @@ type RequestedReviewConnection {
 input RequestedReviewFilterInput {
   instructorId: String
   adminId: String
+  status: VersionStatusType
 }
 
 type Review {
@@ -583,6 +606,7 @@ type VersionResponseEdge {
 enum VersionStatusType {
   ARCHIVED
   PENDING
+  IN_PROGRESS
   APPROVED
   REJECTED
 }

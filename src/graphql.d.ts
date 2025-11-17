@@ -53,6 +53,15 @@ declare module '*/list-admins.graphql' {
 }
     
 
+declare module '*/list-courses.graphql' {
+  import { DocumentNode } from 'graphql';
+  const defaultDocument: DocumentNode;
+  export const ListCourses: DocumentNode;
+
+  export default defaultDocument;
+}
+    
+
 declare module '*/list-instructors.graphql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;

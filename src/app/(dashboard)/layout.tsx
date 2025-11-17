@@ -1,24 +1,16 @@
-"use client";
-import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { Navbar } from "@/components/globals";
 
-export default function DashboardLayout({
+export default function DashboardRootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const router = useRouter();
-  const logOut = () => {
-    sessionStorage.clear();
-    router.push("/login");
-  };
-
   return (
-    <>
-      <Button onClick={logOut} className="w-full rounded-none cursor-pointer">
-        Log Out
-      </Button>
-      {children}
-    </>
+    <div className="flex h-screen w-screen items-start">
+      <Navbar />
+      <div className="h-screen w-[calc(100vw-18.5rem)] overflow-y-scroll px-10 pt-8 pb-12">
+        {children}
+      </div>
+    </div>
   );
 }
