@@ -13,7 +13,7 @@ const nextConfig: NextConfig = {
   output: "standalone",
   env: {
     GRAPHQL_BASE_URL: process.env.GRAPHQL_BASE_URL,
-    GRAPGQL_WS_BASE_URL: process.env.GRAPGQL_WS_BASE_URL,
+    GRAPHQL_WS_BASE_URL: process.env.GRAPHQL_WS_BASE_URL,
   },
   webpack(config) {
     config.module.rules.push({
