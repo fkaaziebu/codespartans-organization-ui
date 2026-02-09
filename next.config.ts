@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         protocol: "http",
         hostname: "3.68.98.186",
       },
+      {
+        protocol: "http",
+        hostname: "138.68.167.20",
+      },
     ],
   },
   output: "standalone",
